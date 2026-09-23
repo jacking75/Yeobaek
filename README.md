@@ -296,6 +296,9 @@ dotnet test                       # 단위 테스트 → bin\Debug\tests\
 dotnet publish src/Yeobaek -c Release -r win-x64 --self-contained false -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true
 ```
 
+결과는 `Yeobaek.exe` 파일 하나(약 5MB)입니다. 네이티브 DLL(WebView2Loader, SQLite)과 디버그 기호도 그 안에
+들어 있어, 이 파일만 복사해 쓰면 됩니다(대상 PC 에는 .NET 10 Desktop Runtime 이 필요합니다).
+
 ### 프로젝트 구성
 
 ```

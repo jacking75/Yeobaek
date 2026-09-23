@@ -10,6 +10,14 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <Product>여백</Product>
     <Version>0.1.0</Version>
+
+    <!--
+      단일 실행 파일로 게시할 때 곁에 다른 파일이 남지 않게 한다.
+      - 디버그 기호(.pdb)는 실행 파일 안에 넣는다. error.log 의 오류 위치(줄 번호)는 그대로 남는다.
+      - 참조한 라이브러리의 API 설명 문서(WebView2 의 .xml)는 실행에 쓰이지 않으므로 복사하지 않는다.
+    -->
+    <DebugType>embedded</DebugType>
+    <AllowedReferenceRelatedFileExtensions>.pdb</AllowedReferenceRelatedFileExtensions>
   </PropertyGroup>
 
   <!-- 버전을 고정해 빌드를 재현 가능하게 한다. -->
