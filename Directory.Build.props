@@ -1,0 +1,34 @@
+<Project>
+
+  <PropertyGroup>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <!--
+    빌드 산출물 위치
+    - 저장소 루트의 bin/<Configuration>/ 한 곳에 모은다.
+    - TFM(net10.0-windows)·RID(win-x64) 하위 폴더를 만들지 않는다.
+    - Directory.Build.props 는 SDK 가 Configuration 기본값을 정하기 전에 평가되므로
+      여기서 먼저 채워야 OutputPath 가 "bin\" 으로 비지 않는다.
+  -->
+  <PropertyGroup>
+    <RepoRoot>$(MSBuildThisFileDirectory)</RepoRoot>
+    <Configuration Condition="'$(Configuration)' == ''">Debug</Configuration>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+  </PropertyGroup>
+
+  <!-- 앱: 한 폴더에 모아 그대로 실행할 수 있게 한다 -->
+  <PropertyGroup Condition="!$(MSBuildProjectName.EndsWith('.Tests'))">
+    <OutputPath>$(RepoRoot)bin\$(Configuration)\</OutputPath>
+    <PublishDir>$(RepoRoot)bin\publish\$(Configuration)\</PublishDir>
+  </PropertyGroup>
+
+  <!-- 테스트: 앱 산출물을 오염시키지 않도록 분리한다 -->
+  <PropertyGroup Condition="$(MSBuildProjectName.EndsWith('.Tests'))">
+    <OutputPath>$(RepoRoot)bin\$(Configuration)\tests\$(MSBuildProjectName)\</OutputPath>
+  </PropertyGroup>
+
+</Project>
