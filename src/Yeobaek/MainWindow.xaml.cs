@@ -101,7 +101,7 @@ public partial class MainWindow : Window
     private void UpdateAll()
     {
         var tab = _tabs.Active;
-        Title = tab is null || tab.Title == BrowserTab.NewTabTitle ? "여백" : $"{tab.Title} - 여백";
+        Title = tab is null || tab.Title == BrowserTab.NewTabTitle ? StringTable.Get("App.Name") : StringTable.Format("Main.TitleWithPage", tab.Title);
         UpdateAddressBar(force: false);
 
         BackButton.IsEnabled = tab?.CanGoBack == true;
@@ -149,27 +149,26 @@ public partial class MainWindow : Window
         ShieldButton.Visibility = Visibility.Visible;
         if (_services.Rules.FindAllowlistEntry(host) is { } entry)
         {
-            ShieldText.Text = "예외 사이트";
+            ShieldText.Text = StringTable.Get("Main.ExceptionSite");
             ShieldButton.Background = (System.Windows.Media.Brush)FindResource("WarnSoftBrush");
             ShieldButton.Foreground = (System.Windows.Media.Brush)FindResource("WarnTextBrush");
-            ShieldButton.ToolTip = $"{entry} 에서는 광고를 차단하지 않습니다. 누르면 다시 차단합니다. (Alt+Shift+A)";
+            ShieldButton.ToolTip = StringTable.Format("Main.ExceptionTip", entry);
         }
         else
         {
-            ShieldText.Text = $"차단 {tab.BlockedCount}";
+            ShieldText.Text = StringTable.Format("Main.BlockedCount", tab.BlockedCount);
             ShieldButton.Background = (System.Windows.Media.Brush)FindResource("AccentSoftBrush");
             ShieldButton.Foreground = (System.Windows.Media.Brush)FindResource("AccentBrush");
-            ShieldButton.ToolTip = $"이 페이지에서 광고·추적 요청 {tab.BlockedCount}개를 막았습니다.\n" +
-                                   "즐겨 읽는 사이트를 후원하려면 눌러서 예외로 두세요. (Alt+Shift+A)";
+            ShieldButton.ToolTip = StringTable.Format("Main.BlockedTip", tab.BlockedCount);
         }
     }
 
     private void UpdateNewTabQueueButton()
     {
         var unread = _services.Queue.CountUnread();
-        NewTabQueueButton.Content = unread > 0 ? $"나중에 읽을 글 {unread}개" : "나중에 읽기 목록";
+        NewTabQueueButton.Content = unread > 0 ? StringTable.Format("Main.UnreadCount", unread) : StringTable.Get("Main.QueueName");
         var (archived, _) = _services.Articles.Summary();
-        NewTabArchiveButton.Content = archived > 0 ? $"보관한 글 {archived}개" : "보관함";
+        NewTabArchiveButton.Content = archived > 0 ? StringTable.Format("Main.ArchivedCount", archived) : StringTable.Get("Main.ArchiveName");
     }
 
     private void FocusActiveContent()
@@ -266,7 +265,7 @@ public partial class MainWindow : Window
         }
         catch (ArgumentException)
         {
-            ShowNotice(Notice.Error("이 주소는 열 수 없습니다. 주소를 다시 확인해 주세요."));
+            ShowNotice(Notice.Error(StringTable.Get("Main.InvalidAddress")));
         }
     }
 

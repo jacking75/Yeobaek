@@ -64,7 +64,7 @@ public partial class MainWindow
 
     private void ReopenClosedTab()
     {
-        if (!_tabs.ReopenClosed()) ShowNotice(Notice.Info("다시 열 탭이 없습니다."));
+        if (!_tabs.ReopenClosed()) ShowNotice(Notice.Info(StringTable.Get("Main.NoClosedTab")));
     }
 
     private void GoBack()
@@ -98,7 +98,7 @@ public partial class MainWindow
         }
         if (!SafeUrl.IsWebUrl(tab.Url))
         {
-            ShowNotice(Notice.Info("웹 페이지에서만 리더 모드를 쓸 수 있습니다."));
+            ShowNotice(Notice.Info(StringTable.Get("Main.ReaderWebOnly")));
             return;
         }
 
@@ -109,14 +109,14 @@ public partial class MainWindow
         {
             var readerUrl = await _services.Reader.CreateReaderPageAsync(tab.Core);
             if (readerUrl is null)
-                ShowNotice(Notice.Info("이 페이지에서는 본문을 찾지 못해 원래 화면을 그대로 둡니다."));
+                ShowNotice(Notice.Info(StringTable.Get("Main.ReaderNoArticle")));
             else if (tab.Url == sourceUrl)   // 추출하는 사이에 다른 곳으로 이동했다면 덮어쓰지 않는다
                 tab.Core.Navigate(readerUrl);
         }
         catch (Exception ex)
         {
-            AppLog.Error(ex, "리더 모드");
-            ShowNotice(Notice.Error("본문을 추출하다 문제가 생겼습니다. 원래 화면을 그대로 둡니다."));
+            AppLog.Error(ex, StringTable.Get("Main.ReaderName"));
+            ShowNotice(Notice.Error(StringTable.Get("Main.ReaderFailed")));
         }
         finally
         {
@@ -130,11 +130,11 @@ public partial class MainWindow
         var tab = _tabs.Active;
         if (tab is null || !SafeUrl.IsWebUrl(tab.DisplayUrl))
         {
-            ShowNotice(Notice.Info("웹 페이지만 나중에 읽기에 담을 수 있습니다."));
+            ShowNotice(Notice.Info(StringTable.Get("Main.QueueWebOnly")));
             return;
         }
         var added = _services.Queue.Add(tab.DisplayUrl, tab.Title);
-        ShowNotice(Notice.Info(added ? "나중에 읽기에 추가했습니다." : "이미 나중에 읽기 목록에 있습니다.", "목록 보기", ShowQueue));
+        ShowNotice(Notice.Info(added ? StringTable.Get("Main.QueueAdded") : StringTable.Get("Main.QueueAlready"), StringTable.Get("Main.ViewQueue"), ShowQueue));
     }
 
     private void StartPicker()
@@ -142,7 +142,7 @@ public partial class MainWindow
         var tab = _tabs.Active;
         if (tab is null || !SafeUrl.IsWebUrl(tab.Url) || tab.IsReaderMode)
         {
-            ShowNotice(Notice.Info("웹 페이지에서만 광고 요소를 고를 수 있습니다."));
+            ShowNotice(Notice.Info(StringTable.Get("Main.PickerWebOnly")));
             return;
         }
         _ = tab.Core.ExecuteScriptAsync("window.__yeobaekPick && window.__yeobaekPick(false)");
@@ -156,7 +156,7 @@ public partial class MainWindow
         var host = HostName.FromUrl(tab?.DisplayUrl);
         if (tab is null || host is null)
         {
-            ShowNotice(Notice.Info("웹 페이지에서만 쓸 수 있습니다."));
+            ShowNotice(Notice.Info(StringTable.Get("Main.WebOnly")));
             return;
         }
 
@@ -164,13 +164,13 @@ public partial class MainWindow
         if (rules.FindAllowlistEntry(host) is { } entry)
         {
             rules.SetAllowlisted(entry, false);
-            ShowNotice(Notice.Info($"{entry} 의 광고를 다시 차단합니다.", "되돌리기", () => SetAllowlistedAndReload(tab, entry, true)));
+            ShowNotice(Notice.Info(StringTable.Format("Main.BlockAgain", entry), StringTable.Get("Common.Undo"), () => SetAllowlistedAndReload(tab, entry, true)));
         }
         else
         {
             rules.SetAllowlisted(host, true);
-            ShowNotice(Notice.Info($"{host} 을 예외 사이트로 두었습니다. 이 사이트에서는 광고를 차단하지 않습니다.",
-                "되돌리기", () => SetAllowlistedAndReload(tab, host, false)));
+            ShowNotice(Notice.Info(StringTable.Format("Main.AllowHost", host),
+                StringTable.Get("Common.Undo"), () => SetAllowlistedAndReload(tab, host, false)));
         }
         _tabs.ReloadWhenRulesApplied(tab);
     }
@@ -191,23 +191,23 @@ public partial class MainWindow
         if (tab is null) return;
         if (_archiveBusy)
         {
-            ShowNotice(Notice.Info("앞의 글을 보관하는 중입니다. 끝난 뒤 다시 시도해 주세요."));
+            ShowNotice(Notice.Info(StringTable.Get("Main.ArchiveBusy")));
             return;
         }
         if (ArchiveService.IsArchiveUrl(tab.Url))
         {
-            ShowNotice(Notice.Info("이미 보관한 글을 보고 있습니다.", "보관함 열기", ShowArchive));
+            ShowNotice(Notice.Info(StringTable.Get("Main.AlreadyArchived"), StringTable.Get("Main.OpenArchive"), ShowArchive));
             return;
         }
         var sourceUrl = tab.DisplayUrl;
         if (!SafeUrl.IsWebUrl(sourceUrl))
         {
-            ShowNotice(Notice.Info("웹 페이지만 보관할 수 있습니다."));
+            ShowNotice(Notice.Info(StringTable.Get("Main.ArchiveWebOnly")));
             return;
         }
 
         _archiveBusy = true;
-        ShowNotice(Notice.Info("보관하는 중입니다. 본문과 이미지를 PC 에 저장하고 있어요…"));
+        ShowNotice(Notice.Info(StringTable.Get("Main.ArchiveProgress")));
         try
         {
             var userAgent = tab.Core.Settings.UserAgent;   // 기다리는 사이 탭이 닫힐 수 있어 먼저 읽는다
@@ -217,22 +217,22 @@ public partial class MainWindow
             if (article is null)
             {
                 ShowNotice(Notice.Info(tab.IsReaderMode
-                    ? "리더 모드를 끄고 원문에서 다시 보관해 주세요."
-                    : "이 페이지에서는 본문을 찾지 못해 보관하지 못했습니다."));
+                    ? StringTable.Get("Main.ArchiveReaderRetry")
+                    : StringTable.Get("Main.ArchiveNoArticle")));
                 return;
             }
 
             var result = await _services.Archive.SaveAsync(article, userAgent);
             var missing = result.ImagesTotal - result.ImagesSaved;
-            var message = $"보관했습니다 · {result.Article.SizeLabel}"
-                          + (result.ImagesTotal > 0 ? $" · 이미지 {result.ImagesSaved}/{result.ImagesTotal}개" : "")
-                          + (missing > 0 ? $" (저장하지 못한 {missing}개는 인터넷이 있을 때만 보입니다)" : "");
-            ShowNotice(Notice.Info(message, "보관함 열기", ShowArchive));
+            var message = StringTable.Format("Main.ArchiveSaved", result.Article.SizeLabel)
+                          + (result.ImagesTotal > 0 ? StringTable.Format("Main.ArchiveImages", result.ImagesSaved, result.ImagesTotal) : "")
+                          + (missing > 0 ? StringTable.Format("Main.ArchiveMissingImages", missing) : "");
+            ShowNotice(Notice.Info(message, StringTable.Get("Main.OpenArchive"), ShowArchive));
         }
         catch (Exception ex)
         {
-            AppLog.Error(ex, "글 보관");
-            ShowNotice(Notice.Error("보관하지 못했습니다. 보관본을 연 탭이 있다면 닫고 다시 시도해 주세요."));
+            AppLog.Error(ex, StringTable.Get("Log.SaveArticle"));
+            ShowNotice(Notice.Error(StringTable.Get("Main.ArchiveFailed")));
         }
         finally
         {
@@ -265,7 +265,7 @@ public partial class MainWindow
         }
         catch (Exception ex) when (ex is System.ComponentModel.Win32Exception or InvalidOperationException)
         {
-            ShowNotice(Notice.Error($"열지 못했습니다: {path}"));
+            ShowNotice(Notice.Error(StringTable.Format("Main.OpenFailed", path)));
         }
     }
 

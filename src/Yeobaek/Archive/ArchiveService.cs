@@ -6,6 +6,7 @@ using Microsoft.Web.WebView2.Core;
 using Yeobaek.Browser;
 using Yeobaek.Data;
 using Yeobaek.Reader;
+using Yeobaek.Ui;
 
 namespace Yeobaek.Archive;
 
@@ -189,7 +190,7 @@ public sealed class ArchiveService
         }
         catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
         {
-            AppLog.Error(ex, $"보관 폴더 삭제: {path}");
+            AppLog.Error(ex, StringTable.Format("Log.DeleteArchiveFolder", path));
         }
     }
 

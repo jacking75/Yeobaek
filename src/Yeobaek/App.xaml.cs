@@ -14,7 +14,7 @@ public partial class App : Application
         DispatcherUnhandledException += OnDispatcherUnhandledException;
         TaskScheduler.UnobservedTaskException += (_, args) =>
         {
-            AppLog.Error(args.Exception, "관찰되지 않은 작업 예외");
+            AppLog.Error(args.Exception, StringTable.Get("Log.UnobservedTask"));
             args.SetObserved();
         };
 
@@ -25,18 +25,13 @@ public partial class App : Application
         }
         catch (WebView2RuntimeNotFoundException)
         {
-            ShowStartupError(
-                "Microsoft Edge WebView2 런타임을 찾을 수 없습니다.\n\n" +
-                "https://developer.microsoft.com/microsoft-edge/webview2/ 에서\n" +
-                "'Evergreen 부트스트래퍼'를 내려받아 설치한 뒤 여백을 다시 실행해 주세요.");
+            ShowStartupError(StringTable.Get("App.WebViewMissing"));
             return;
         }
         catch (Exception ex)
         {
-            AppLog.Error(ex, "시작");
-            ShowStartupError(
-                $"여백을 시작하지 못했습니다.\n\n{ex.Message}\n\n" +
-                $"자세한 내용은 다음 파일에 남겼습니다:\n{AppPaths.ErrorLog}");
+            AppLog.Error(ex, StringTable.Get("Log.Startup"));
+            ShowStartupError(StringTable.Format("App.StartFailed", ex.Message, AppPaths.ErrorLog));
             return;
         }
 
@@ -51,20 +46,20 @@ public partial class App : Application
 
     private void ShowStartupError(string message)
     {
-        MessageBox.Show(message, "여백", MessageBoxButton.OK, MessageBoxImage.Error);
+        MessageBox.Show(message, StringTable.Get("App.Name"), MessageBoxButton.OK, MessageBoxImage.Error);
         Shutdown(1);
     }
 
     /// <summary>예상하지 못한 예외로 앱 전체가 닫히지 않게 한다. 기록을 남기고 사용자에게 알린다.</summary>
     private void OnDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
     {
-        AppLog.Error(e.Exception, "처리되지 않은 예외");
+        AppLog.Error(e.Exception, StringTable.Get("Log.Unhandled"));
         e.Handled = true;
 
-        var message = $"예상하지 못한 문제가 생겼습니다. 계속 사용할 수 있지만 이상하면 여백을 다시 시작해 주세요. ({e.Exception.Message})";
+        var message = StringTable.Format("App.UnexpectedError", e.Exception.Message);
         var window = Windows.OfType<global::Yeobaek.MainWindow>().FirstOrDefault(w => w.IsActive)
                      ?? Windows.OfType<global::Yeobaek.MainWindow>().FirstOrDefault();
         if (window is not null) window.ShowNotice(Notice.Error(message));
-        else MessageBox.Show(message, "여백", MessageBoxButton.OK, MessageBoxImage.Warning);
+        else MessageBox.Show(message, StringTable.Get("App.Name"), MessageBoxButton.OK, MessageBoxImage.Warning);
     }
 }

@@ -4,6 +4,7 @@ using Yeobaek.Archive;
 using Yeobaek.Browser;
 using Yeobaek.Data;
 using Yeobaek.Reader;
+using Yeobaek.Ui;
 
 namespace Yeobaek;
 
@@ -46,6 +47,7 @@ public sealed class AppServices
     public static async Task<AppServices> CreateAsync()
     {
         var settings = new SettingsFile(AppPaths.Settings);
+        StringTable.SetLanguage(settings.Current.Language);
 
         var database = new Database(AppPaths.RulesDb);
         database.EnsureCreated(RuleStore.SeedGlobalRules);
@@ -55,7 +57,7 @@ public sealed class AppServices
         var blocker = new RequestBlocker(rules, AppPaths.BlockList);
 
         var token = Convert.ToHexString(RandomNumberGenerator.GetBytes(16));
-        var environment = await CreateEnvironmentAsync();
+        var environment = await CreateEnvironmentAsync(StringTable.Language);
 
         return new AppServices(
             environment, settings, rules, new ReadingQueue(database), articles,
@@ -70,17 +72,28 @@ public sealed class AppServices
     public string? ReloadChangedFiles()
     {
         var messages = new List<string>();
-        if (Blocker.ReloadIfChanged() is { } count) messages.Add($"차단 목록을 다시 읽었습니다(항목 {count}개).");
-        if (Settings.ReloadIfChanged()) messages.Add(Settings.Error ?? "설정을 다시 읽었습니다.");
+        if (Blocker.ReloadIfChanged() is { } count) messages.Add(StringTable.Format("Settings.BlockListReloaded", count));
+        if (Settings.ReloadIfChanged())
+        {
+            messages.Add(Settings.Error ?? StringTable.Get("Settings.Reloaded"));
+            if (StringTable.NormalizeLanguage(Settings.Current.Language) != StringTable.Language)
+                messages.Add(StringTable.Get("Settings.RestartLanguage"));
+        }
         return messages.Count == 0 ? null : string.Join(" ", messages);
     }
 
-    private static Task<CoreWebView2Environment> CreateEnvironmentAsync()
+    private static Task<CoreWebView2Environment> CreateEnvironmentAsync(string language)
     {
         var options = new CoreWebView2EnvironmentOptions
         {
             AdditionalBrowserArguments = "--disable-features=Translate,msEdgeSidebar",
-            Language = "ko-KR",
+            Language = language switch
+            {
+                "en" => "en-US",
+                "ja" => "ja-JP",
+                "zh-CN" => "zh-CN",
+                _ => "ko-KR",
+            },
         };
         return CoreWebView2Environment.CreateAsync(
             browserExecutableFolder: null,

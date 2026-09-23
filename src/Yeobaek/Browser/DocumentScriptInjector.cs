@@ -2,6 +2,7 @@ using System.IO;
 using System.Text.Json;
 using Microsoft.Web.WebView2.Core;
 using Yeobaek.Data;
+using Yeobaek.Ui;
 
 namespace Yeobaek.Browser;
 
@@ -66,7 +67,7 @@ public sealed class DocumentScriptInjector
         }
         catch (Exception ex)
         {
-            AppLog.Error(ex, "문서 스크립트 갱신");
+            AppLog.Error(ex, StringTable.Get("Log.RefreshScript"));
         }
     }
 
@@ -98,6 +99,12 @@ public sealed class DocumentScriptInjector
             token = _token,
             allow = _rules.GetAllowlist(),
             rules = _rules.GetAllGroupedByHost(),
+            strings = new
+            {
+                pickerHint = StringTable.Get("Browser.PickerHint"),
+                pickerMove = StringTable.Get("Browser.PickerMove"),
+                pickerInvalid = StringTable.Get("Browser.PickerInvalid"),
+            },
         });
         return $"(() => {{\n'use strict';\nconst CONFIG = {config};\n{Prelude}\n{Picker}\n}})();";
     }
@@ -105,7 +112,7 @@ public sealed class DocumentScriptInjector
     private static string ReadAsset(string fileName)
     {
         using var stream = typeof(DocumentScriptInjector).Assembly.GetManifestResourceStream("Yeobaek.Assets." + fileName)
-                           ?? throw new InvalidOperationException($"내장 리소스 {fileName} 을 찾을 수 없습니다.");
+                           ?? throw new InvalidOperationException(StringTable.Format("Log.MissingResource", fileName));
         using var reader = new StreamReader(stream);
         return reader.ReadToEnd();
     }

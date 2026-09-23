@@ -50,10 +50,10 @@ public sealed class HostMessageBridge(TabManager tabs, BrowserTab tab)
         var rules = tabs.Services.Rules;
         if (!rules.AddRule(host, selector))
         {
-            tabs.Notify(Notice.Info("이미 저장된 규칙입니다."));
+            tabs.Notify(Notice.Info(StringTable.Get("Browser.RuleExists")));
             return;
         }
-        tabs.Notify(Notice.Info($"{host} 에서 이 영역을 계속 숨깁니다.", "되돌리기", () =>
+        tabs.Notify(Notice.Info(StringTable.Format("Browser.RuleSaved", host), StringTable.Get("Common.Undo"), () =>
         {
             rules.DeleteRule(host, selector);
             tabs.ReloadWhenRulesApplied(tab);

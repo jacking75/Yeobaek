@@ -1,6 +1,7 @@
 using System.Globalization;
 using System.Net;
 using Yeobaek.Data;
+using Yeobaek.Ui;
 
 namespace Yeobaek.Reader;
 
@@ -25,8 +26,8 @@ public static class ReaderPage
     /// <param name="archivedAt">보관본이면 보관한 시각. 제목 아래에 보관본임을 적는다.</param>
     public static string Build(ReaderContent content, ReaderSettings settings, DateTime? archivedAt = null)
     {
-        var archivedNote = archivedAt is { } time ? $"{time:yyyy-MM-dd} 보관본" : null;
-        var meta = string.Join(" · ", new[] { archivedNote, content.SiteName, content.Byline, $"약 {content.MinutesToRead}분" }
+        var archivedNote = archivedAt is { } time ? StringTable.Format("Reader.ArchivedOn", time) : null;
+        var meta = string.Join(" · ", new[] { archivedNote, content.SiteName, content.Byline, StringTable.Format("Reader.Minutes", content.MinutesToRead) }
             .Where(part => !string.IsNullOrWhiteSpace(part))
             .Select(part => Encode(part!)));
 
@@ -46,7 +47,7 @@ public static class ReaderPage
             <header>
               <h1>{{Encode(content.Title)}}</h1>
               <div class="meta">{{meta}}</div>
-              <a class="source" href="{{Encode(content.SourceUrl)}}">원문 보기</a>
+              <a class="source" href="{{Encode(content.SourceUrl)}}">{{Encode(StringTable.Get("Reader.ViewSource"))}}</a>
             </header>
             <article>
             {{content.ContentHtml}}

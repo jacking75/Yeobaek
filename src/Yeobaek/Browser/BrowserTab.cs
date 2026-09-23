@@ -2,13 +2,14 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using Microsoft.Web.WebView2.Core;
 using Microsoft.Web.WebView2.Wpf;
+using Yeobaek.Ui;
 
 namespace Yeobaek.Browser;
 
 /// <summary>탭 하나. WebView2 컨트롤과, 화면(탭 줄·주소창·도구 모음)에 보여 줄 상태를 가진다.</summary>
 public sealed class BrowserTab(WebView2 view) : INotifyPropertyChanged
 {
-    public const string NewTabTitle = "새 탭";
+    public static string NewTabTitle => StringTable.Get("Main.NewTab");
 
     public event PropertyChangedEventHandler? PropertyChanged;
 

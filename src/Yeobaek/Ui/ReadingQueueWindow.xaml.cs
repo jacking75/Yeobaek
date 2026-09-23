@@ -44,7 +44,7 @@ public partial class ReadingQueueWindow : Window
         var selected = SelectedEntries();
         if (selected.Count == 0)
         {
-            StatusText.Text = "열 글을 목록에서 먼저 고르세요.";
+            StatusText.Text = StringTable.Get("Common.ChooseArticle");
             return;
         }
         foreach (var entry in selected)
@@ -89,11 +89,11 @@ public partial class ReadingQueueWindow : Window
         var selected = SelectedEntries();
         if (selected.Count == 0)
         {
-            StatusText.Text = "삭제할 글을 목록에서 먼저 고르세요.";
+            StatusText.Text = StringTable.Get("Queue.DeleteChoose");
             return;
         }
         foreach (var entry in selected) _queue.Delete(entry.Id);
-        StatusText.Text = $"{selected.Count}개를 목록에서 뺐습니다.";
+        StatusText.Text = StringTable.Format("Queue.Removed", selected.Count);
         Refresh();
     }
 }

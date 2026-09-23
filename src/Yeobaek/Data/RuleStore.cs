@@ -1,10 +1,12 @@
 using Microsoft.Data.Sqlite;
 
+using Yeobaek.Ui;
+
 namespace Yeobaek.Data;
 
 public sealed record RuleEntry(long Id, string Host, string Selector, DateTime AddedAt)
 {
-    public string ScopeLabel => Host == HostName.Global ? "모든 사이트" : Host;
+    public string ScopeLabel => Host == HostName.Global ? StringTable.Get("Rules.AllSites") : Host;
 }
 
 /// <summary>요소 숨김 규칙과 차단 예외 사이트(allowlist) 저장소.</summary>

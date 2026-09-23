@@ -58,18 +58,18 @@ public sealed class ContextMenuService(TabManager tabs, BrowserTab tab)
         return new MenuItems(
             LinkItems:
             [
-                Command(environment, "새 탭에서 열기(&T)", () => tabs.OpenTab(_linkUrl, activate: false)),
-                Command(environment, "새 탭에서 열고 이동(&N)", () => tabs.OpenTab(_linkUrl, activate: true)),
-                Command(environment, "새 창에서 열기(&W)", () => MainWindow.Open(tabs.Services, _linkUrl)),
-                Command(environment, "링크 주소 복사(&C)", () => CopyToClipboard(_linkUrl)),
-                Command(environment, "나중에 읽기에 추가(&R)", AddLinkToQueue),
+                Command(environment, StringTable.Get("Browser.CtxBackground"), () => tabs.OpenTab(_linkUrl, activate: false)),
+                Command(environment, StringTable.Get("Browser.CtxForeground"), () => tabs.OpenTab(_linkUrl, activate: true)),
+                Command(environment, StringTable.Get("Browser.CtxWindow"), () => MainWindow.Open(tabs.Services, _linkUrl)),
+                Command(environment, StringTable.Get("Browser.CtxCopyLink"), () => CopyToClipboard(_linkUrl)),
+                Command(environment, StringTable.Get("Browser.CtxQueue"), AddLinkToQueue),
                 separator(),
             ],
             PageItems:
             [
                 separator(),
-                Command(environment, "이 영역 광고 숨기기(&H)", StartPicker),
-                Command(environment, "이 사이트 규칙 관리(&M)", ShowRuleEditor),
+                Command(environment, StringTable.Get("Browser.CtxHide"), StartPicker),
+                Command(environment, StringTable.Get("Browser.CtxRules"), ShowRuleEditor),
             ]);
     }
 
@@ -87,7 +87,7 @@ public sealed class ContextMenuService(TabManager tabs, BrowserTab tab)
     private void AddLinkToQueue()
     {
         var added = tabs.Services.Queue.Add(_linkUrl, _linkText);
-        tabs.Notify(Notice.Info(added ? "나중에 읽기에 추가했습니다." : "이미 나중에 읽기 목록에 있습니다."));
+        tabs.Notify(Notice.Info(added ? StringTable.Get("Main.QueueAdded") : StringTable.Get("Main.QueueAlready")));
     }
 
     private void StartPicker()
@@ -110,7 +110,7 @@ public sealed class ContextMenuService(TabManager tabs, BrowserTab tab)
         }
         catch (COMException)
         {
-            tabs.Notify(Notice.Error("다른 프로그램이 클립보드를 쓰고 있습니다. 잠시 후 다시 시도해 주세요."));
+            tabs.Notify(Notice.Error(StringTable.Get("Browser.ClipboardBusy")));
         }
     }
 

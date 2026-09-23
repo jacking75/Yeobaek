@@ -1,6 +1,7 @@
 using System.IO;
 using System.Text.Encodings.Web;
 using System.Text.Json;
+using Yeobaek.Ui;
 
 namespace Yeobaek.Data;
 
@@ -13,6 +14,9 @@ public sealed class AppSettings
 
     /// <summary>주소창에 검색어를 넣었을 때 쓸 주소. {0} 자리에 검색어가 들어간다.</summary>
     public string SearchUrl { get; set; } = DefaultSearchUrl;
+
+    /// <summary>프로그램 표시 언어: ko, en, ja, zh-CN. 기본값은 한국어.</summary>
+    public string Language { get; set; } = "ko";
 
     public ReaderSettings Reader { get; set; } = new();
 }
@@ -83,7 +87,7 @@ public sealed class SettingsFile
         catch (Exception ex) when (ex is JsonException or IOException or UnauthorizedAccessException)
         {
             Current = new AppSettings();
-            Error = $"settings.json 을 읽지 못해 기본 설정을 씁니다. 파일 내용을 확인해 주세요. ({ex.Message})";
+            Error = StringTable.Format("Settings.Invalid", ex.Message);
         }
         _lastWriteTimeUtc = File.GetLastWriteTimeUtc(_path);
     }

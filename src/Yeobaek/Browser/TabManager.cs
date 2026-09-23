@@ -44,8 +44,8 @@ public sealed class TabManager(AppServices services, Panel host)
         }
         catch (Exception ex)
         {
-            AppLog.Error(ex, "탭 생성");
-            Notify(Notice.Error("새 탭을 열지 못했습니다. 잠시 후 다시 시도해 주세요."));
+            AppLog.Error(ex, StringTable.Get("Log.CreateTab"));
+            Notify(Notice.Error(StringTable.Get("Browser.NewTabFailed")));
         }
     }
 
@@ -100,7 +100,7 @@ public sealed class TabManager(AppServices services, Panel host)
         Services.Reader.Attach(core);
         Services.Archive.Attach(core);
         Services.Blocker.Attach(core, tab.CountBlockedRequest,
-            url => Notify(Notice.Info($"광고 주소로 이동하려는 것을 막았습니다: {HostName.FromUrl(url) ?? url}")));
+            url => Notify(Notice.Info(StringTable.Format("Browser.BlockedAddress", HostName.FromUrl(url) ?? url))));
         new ContextMenuService(this, tab).Attach();
         new HostMessageBridge(this, tab).Attach();
         new PopupHandler(this, tab).Attach();
@@ -129,7 +129,7 @@ public sealed class TabManager(AppServices services, Panel host)
         }
         catch (Exception ex)
         {
-            AppLog.Error(ex, "규칙 변경 후 새로 고침");
+            AppLog.Error(ex, StringTable.Get("Log.ReloadRules"));
         }
     }
 
@@ -252,11 +252,11 @@ public sealed class TabManager(AppServices services, Panel host)
         switch (e.ProcessFailedKind)
         {
             case CoreWebView2ProcessFailedKind.BrowserProcessExited:
-                Notify(Notice.Error("브라우저 엔진이 종료되었습니다. 여백을 다시 시작해 주세요."));
+                Notify(Notice.Error(StringTable.Get("Browser.EngineExited")));
                 break;
             case CoreWebView2ProcessFailedKind.RenderProcessExited:
             case CoreWebView2ProcessFailedKind.RenderProcessUnresponsive:
-                Notify(Notice.Error($"'{tab.Title}' 탭이 응답하지 않습니다.", "새로 고침", () => tab.Core.Reload()));
+                Notify(Notice.Error(StringTable.Format("Browser.TabUnresponsive", tab.Title), StringTable.Get("Main.Reload"), () => tab.Core.Reload()));
                 break;
         }
     }

@@ -70,7 +70,7 @@ public partial class RuleEditorWindow : Window
             _rules.SetAllowlisted(entry, false);   // 상위 도메인으로 예외가 걸려 있으면 그 항목을 푼다
         }
         Refresh();
-        ShowStatus("바뀐 설정은 페이지를 새로 고치면 반영됩니다.");
+        ShowStatus(StringTable.Get("Rules.SettingsChanged"));
     }
 
     private void AddRule_Click(object sender, RoutedEventArgs e) => AddRule();
@@ -87,19 +87,19 @@ public partial class RuleEditorWindow : Window
         var selector = SelectorBox.Text.Trim();
         if (!SelectorRules.IsAcceptable(selector))
         {
-            ShowStatus($"선택자를 확인해 주세요. 비어 있지 않아야 하고, 중괄호({{ }})는 쓸 수 없으며 {SelectorRules.MaxLength}자 이하여야 합니다.", isError: true);
+            ShowStatus(StringTable.Format("Rules.InvalidSelector", SelectorRules.MaxLength), isError: true);
             return;
         }
 
         var scope = GlobalCheck.IsChecked == true || _host.Length == 0 ? HostName.Global : _host;
         if (!_rules.AddRule(scope, selector))
         {
-            ShowStatus("이미 있는 규칙입니다.");
+            ShowStatus(StringTable.Get("Rules.Exists"));
             return;
         }
         SelectorBox.Clear();
         Refresh();
-        ShowStatus("규칙을 추가했습니다. 페이지를 새로 고치면 반영됩니다. 올바른 CSS 선택자가 아니면 적용되지 않습니다.");
+        ShowStatus(StringTable.Get("Rules.Added"));
     }
 
     private void DeleteRules_Click(object sender, RoutedEventArgs e) => DeleteSelectedRules();
@@ -116,12 +116,12 @@ public partial class RuleEditorWindow : Window
         var selected = RuleList.SelectedItems.OfType<RuleEntry>().ToList();
         if (selected.Count == 0)
         {
-            ShowStatus("삭제할 규칙을 목록에서 먼저 고르세요.");
+            ShowStatus(StringTable.Get("Rules.DeleteChoose"));
             return;
         }
         _rules.DeleteRules(selected.Select(rule => rule.Id));
         Refresh();
-        ShowStatus($"규칙 {selected.Count}개를 삭제했습니다. 페이지를 새로 고치면 반영됩니다.");
+        ShowStatus(StringTable.Format("Rules.Deleted", selected.Count));
     }
 
     private void ShowStatus(string message, bool isError = false)

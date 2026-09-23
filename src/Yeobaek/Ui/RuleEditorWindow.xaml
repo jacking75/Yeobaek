@@ -1,7 +1,8 @@
 <Window x:Class="Yeobaek.Ui.RuleEditorWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="사이트 규칙 관리 - 여백" Width="760" Height="560" MinWidth="520" MinHeight="380"
+        xmlns:ui="clr-namespace:Yeobaek.Ui"
+        Title="{ui:Localize Rules.WindowTitle}" Width="760" Height="560" MinWidth="520" MinHeight="380"
         Icon="../Assets/yeobaek.ico"
         FontFamily="{StaticResource UiFont}" FontSize="13"
         Background="{StaticResource SurfaceBrush}" Foreground="{StaticResource TextBrush}"
@@ -10,43 +11,43 @@
 
     <!-- 사이트 고르기 -->
     <DockPanel DockPanel.Dock="Top">
-      <TextBlock Text="사이트" FontWeight="SemiBold" VerticalAlignment="Center" Margin="0,0,12,0" />
-      <Button DockPanel.Dock="Right" Style="{StaticResource TextButton}" Content="불러오기" Margin="8,0,0,0" Click="LoadHost_Click" />
-      <TextBox x:Name="HostBox" Style="{StaticResource FieldTextBox}" Tag="예: blog.example.com" KeyDown="HostBox_KeyDown" />
+      <TextBlock Text="{ui:Localize Common.Site}" FontWeight="SemiBold" VerticalAlignment="Center" Margin="0,0,12,0" />
+      <Button DockPanel.Dock="Right" Style="{StaticResource TextButton}" Content="{ui:Localize Rules.Load}" Margin="8,0,0,0" Click="LoadHost_Click" />
+      <TextBox x:Name="HostBox" Style="{StaticResource FieldTextBox}" Tag="{ui:Localize Rules.HostExample}" KeyDown="HostBox_KeyDown" />
     </DockPanel>
 
     <CheckBox x:Name="AllowlistCheck" DockPanel.Dock="Top" Margin="0,14,0,0" VerticalContentAlignment="Center"
-              Content="이 사이트는 광고를 차단하지 않기 (예외 사이트 · 후원)" Click="AllowlistCheck_Click" />
+              Content="{ui:Localize Rules.Allowlist}" Click="AllowlistCheck_Click" />
 
-    <TextBlock DockPanel.Dock="Top" Text="이 사이트에 적용되는 숨김 규칙" FontWeight="SemiBold" Margin="0,20,0,8" />
+    <TextBlock DockPanel.Dock="Top" Text="{ui:Localize Rules.Applied}" FontWeight="SemiBold" Margin="0,20,0,8" />
 
     <!-- 규칙 추가 -->
     <DockPanel DockPanel.Dock="Bottom" Margin="0,10,0,0">
-      <Button DockPanel.Dock="Right" Style="{StaticResource PrimaryButton}" Content="추가" Margin="8,0,0,0" Click="AddRule_Click" />
-      <CheckBox x:Name="GlobalCheck" DockPanel.Dock="Right" Content="모든 사이트에 적용" VerticalAlignment="Center" Margin="10,0,0,0" />
-      <TextBox x:Name="SelectorBox" Style="{StaticResource FieldTextBox}" Tag="숨길 요소의 CSS 선택자 (예: .ad-banner, #sidebar-ad)"
+      <Button DockPanel.Dock="Right" Style="{StaticResource PrimaryButton}" Content="{ui:Localize Rules.Add}" Margin="8,0,0,0" Click="AddRule_Click" />
+      <CheckBox x:Name="GlobalCheck" DockPanel.Dock="Right" Content="{ui:Localize Rules.Global}" VerticalAlignment="Center" Margin="10,0,0,0" />
+      <TextBox x:Name="SelectorBox" Style="{StaticResource FieldTextBox}" Tag="{ui:Localize Rules.SelectorHint}"
                FontFamily="Consolas, Malgun Gothic" KeyDown="SelectorBox_KeyDown" />
     </DockPanel>
 
     <DockPanel DockPanel.Dock="Bottom" Margin="0,10,0,0">
-      <Button DockPanel.Dock="Right" Style="{StaticResource TextButton}" Content="선택한 규칙 삭제" Click="DeleteRules_Click" />
+      <Button DockPanel.Dock="Right" Style="{StaticResource TextButton}" Content="{ui:Localize Rules.DeleteSelected}" Click="DeleteRules_Click" />
       <TextBlock x:Name="StatusText" Foreground="{StaticResource MutedTextBrush}" TextWrapping="Wrap" VerticalAlignment="Center"
-                 Text="바뀐 규칙은 페이지를 새로 고치면 반영됩니다." />
+                 Text="{ui:Localize Rules.ReloadHint}" />
     </DockPanel>
 
     <Grid>
       <ListView x:Name="RuleList" Style="{StaticResource PlainListView}" SelectionMode="Extended" KeyDown="RuleList_KeyDown">
         <ListView.View>
           <GridView>
-            <GridViewColumn Header="적용 범위" Width="170" DisplayMemberBinding="{Binding ScopeLabel}" />
-            <GridViewColumn Header="선택자" Width="400" DisplayMemberBinding="{Binding Selector}" />
-            <GridViewColumn Header="추가한 날" Width="110" DisplayMemberBinding="{Binding AddedAt, StringFormat=yyyy-MM-dd}" />
+            <GridViewColumn Header="{ui:Localize Rules.Scope}" Width="170" DisplayMemberBinding="{Binding ScopeLabel}" />
+            <GridViewColumn Header="{ui:Localize Rules.Selector}" Width="400" DisplayMemberBinding="{Binding Selector}" />
+            <GridViewColumn Header="{ui:Localize Rules.AddedAt}" Width="110" DisplayMemberBinding="{Binding AddedAt, StringFormat=yyyy-MM-dd}" />
           </GridView>
         </ListView.View>
       </ListView>
       <TextBlock x:Name="EmptyText" Visibility="Collapsed" HorizontalAlignment="Center" VerticalAlignment="Center"
                  TextAlignment="Center" TextWrapping="Wrap" MaxWidth="380" Foreground="{StaticResource MutedTextBrush}"
-                 Text="아직 규칙이 없습니다. 페이지에서 Alt+Shift+Z 로 남은 광고를 골라 숨기거나, 아래에 선택자를 직접 입력하세요." />
+                 Text="{ui:Localize Rules.Empty}" />
     </Grid>
   </DockPanel>
 </Window>

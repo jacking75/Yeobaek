@@ -1,6 +1,7 @@
 using System.IO;
 using Microsoft.Web.WebView2.Core;
 using Yeobaek.Data;
+using Yeobaek.Ui;
 
 namespace Yeobaek.Browser;
 
@@ -128,7 +129,7 @@ public sealed class RequestBlocker
         }
         catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
         {
-            AppLog.Error(ex, "blocklist.txt 읽기");
+            AppLog.Error(ex, StringTable.Get("Log.ReadBlockList"));
             return BlockRules.WithBuiltIn([]);
         }
     }

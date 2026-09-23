@@ -10,8 +10,7 @@ namespace Yeobaek.Ui;
 /// <summary>보관함 창. 보관한 글을 찾아 보관본(오프라인)이나 원문으로 연다. 앱에 하나만 띄운다.</summary>
 public partial class ArchiveWindow : Window
 {
-    private const string EmptyArchiveMessage =
-        "보관한 글이 없습니다. 읽던 글에서 Ctrl+S 를 누르면 이미지까지 PC 에 저장되어 인터넷 없이도 읽을 수 있고, 여기서 제목·본문으로 찾을 수 있습니다.";
+    private static string EmptyArchiveMessage => StringTable.Get("Archive.Empty");
 
     private static ArchiveWindow? _current;
 
@@ -51,11 +50,11 @@ public partial class ArchiveWindow : Window
         ResultList.ItemsSource = results;
 
         var (count, totalBytes) = _services.Articles.Summary();
-        EmptyText.Text = count == 0 ? EmptyArchiveMessage : $"'{query}' 이(가) 들어간 글이 없습니다.";
+        EmptyText.Text = count == 0 ? EmptyArchiveMessage : StringTable.Format("Archive.NoResults", query);
         EmptyText.Visibility = results.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
         StatusText.Text = query.Length == 0
-            ? $"보관한 글 {count}개 · {FormatSize(totalBytes)}"
-            : $"{count}개 중 {results.Count}개 찾음";
+            ? StringTable.Format("Archive.Summary", count, FormatSize(totalBytes))
+            : StringTable.Format("Archive.Results", count, results.Count);
     }
 
     private static string FormatSize(long bytes)
@@ -69,7 +68,7 @@ public partial class ArchiveWindow : Window
         if (selected.Count == 0 && ResultList.Items.Count == 1) selected = [(ArticleSearchResult)ResultList.Items[0]];
         if (selected.Count == 0)
         {
-            StatusText.Text = "열 글을 목록에서 먼저 고르세요.";
+            StatusText.Text = StringTable.Get("Common.ChooseArticle");
             return;
         }
         foreach (var result in selected)
@@ -131,17 +130,17 @@ public partial class ArchiveWindow : Window
         var selected = SelectedResults();
         if (selected.Count == 0)
         {
-            StatusText.Text = "삭제할 글을 목록에서 먼저 고르세요.";
+            StatusText.Text = StringTable.Get("Archive.DeleteChoose");
             return;
         }
 
         var message = selected.Count == 1
-            ? $"'{selected[0].Title}' 보관본을 지울까요?\n저장한 이미지와 검색 색인도 함께 지워집니다."
-            : $"보관본 {selected.Count}개를 지울까요?\n저장한 이미지와 검색 색인도 함께 지워집니다.";
-        if (MessageBox.Show(this, message, "보관본 삭제", MessageBoxButton.OKCancel, MessageBoxImage.Question) != MessageBoxResult.OK) return;
+            ? StringTable.Format("Archive.DeleteOneConfirm", selected[0].Title)
+            : StringTable.Format("Archive.DeleteManyConfirm", selected.Count);
+        if (MessageBox.Show(this, message, StringTable.Get("Archive.DeleteTitle"), MessageBoxButton.OKCancel, MessageBoxImage.Question) != MessageBoxResult.OK) return;
 
         foreach (var result in selected) _services.Archive.Delete(result.Article);
         Refresh();
-        StatusText.Text = $"보관본 {selected.Count}개를 지웠습니다.";
+        StatusText.Text = StringTable.Format("Archive.Deleted", selected.Count);
     }
 }

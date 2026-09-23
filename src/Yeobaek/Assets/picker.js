@@ -106,7 +106,7 @@ function openPicker(initialTarget, onClose) {
   const box = makeElement('div', 'box');
   const label = makeElement('div', 'label');
   const selectorLine = makeElement('span', 'selector');
-  label.append(selectorLine, document.createTextNode('클릭: 숨기기 · ↑/↓: 범위 조절 · Esc: 취소'));
+  label.append(selectorLine, document.createTextNode(CONFIG.strings.pickerHint));
   shadow.append(shield, box, label);
   document.documentElement.appendChild(root);
 
@@ -118,14 +118,14 @@ function openPicker(initialTarget, onClose) {
   function render() {
     if (!target || !target.isConnected) {
       box.style.display = 'none';
-      selectorLine.textContent = '숨길 영역에 마우스를 올리세요';
+      selectorLine.textContent = CONFIG.strings.pickerMove;
       return;
     }
     const rect = target.getBoundingClientRect();
     Object.assign(box.style, {
       display: 'block', left: rect.left + 'px', top: rect.top + 'px', width: rect.width + 'px', height: rect.height + 'px',
     });
-    selectorLine.textContent = buildSelector(target) || '(이 요소는 선택자를 만들 수 없습니다)';
+    selectorLine.textContent = buildSelector(target) || CONFIG.strings.pickerInvalid;
   }
 
   function elementAt(x, y) {

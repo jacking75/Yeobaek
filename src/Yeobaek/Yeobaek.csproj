@@ -32,6 +32,7 @@
   <ItemGroup>
     <!-- 문서 생성 전 주입 스크립트. DocumentScriptInjector 가 GetManifestResourceStream 으로 읽는다 -->
     <EmbeddedResource Include="Assets\*.js" LogicalName="Yeobaek.Assets.%(Filename)%(Extension)" />
+    <EmbeddedResource Include="Strings\*.json" LogicalName="Yeobaek.Strings.%(Filename)%(Extension)" />
     <Resource Include="Assets\yeobaek.ico" />
   </ItemGroup>
 

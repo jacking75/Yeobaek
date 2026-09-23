@@ -2,6 +2,7 @@ using System.IO;
 using System.Text;
 using Microsoft.Web.WebView2.Core;
 using Yeobaek.Data;
+using Yeobaek.Ui;
 
 namespace Yeobaek.Reader;
 
@@ -89,7 +90,7 @@ public sealed class ReaderService
         }
         catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
         {
-            AppLog.Error(ex, "리더 캐시 정리");
+            AppLog.Error(ex, StringTable.Get("Log.CleanReaderCache"));
         }
     }
 }
