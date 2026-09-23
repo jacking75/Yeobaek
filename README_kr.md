@@ -101,30 +101,28 @@
 
 ### 1. 설치하고 실행하기
 
-아직 설치 파일을 따로 배포하지 않으므로, 소스를 받아 한 번 빌드해서 씁니다. 처음 한 번만 하면 됩니다.
+별도의 설치 마법사는 없다. 가장 쉬운 방법은 미리 빌드된 실행 파일을 받는 것이다.
 
-1. **.NET 10 SDK 설치**
-   [dotnet.microsoft.com/download](https://dotnet.microsoft.com/download) 에서 **.NET 10.0 SDK (Windows x64)** 를
-   받아 설치합니다. 빌드에는 SDK 가 필요합니다(실행만 할 때는 Desktop Runtime 으로 충분합니다).
-2. **소스 받기**
-   [github.com/jacking75/Yeobaek](https://github.com/jacking75/Yeobaek) 에서 초록색 **Code → Download ZIP** 으로 받아
-   압축을 풉니다. Git 을 쓴다면 `git clone https://github.com/jacking75/Yeobaek.git` 도 됩니다.
-3. **빌드**
-   압축을 푼 폴더(`README.md` 가 있는 곳)의 빈 곳을 **Shift+우클릭 → 터미널에서 열기**(또는 PowerShell 창 열기)
-   한 뒤 아래를 입력합니다. `경고 0개, 오류 0개` 또는 `Build succeeded` 가 나오면 끝입니다.
+1. **여백 받기**: [v0.1.0 릴리스](https://github.com/jacking75/Yeobaek/releases/tag/v0.1.0)의 **Assets**에서 `Yeobaek.exe`를 받는다. Windows x64용 파일이다.
+2. **런타임 설치**: .NET 10 Desktop Runtime이 없다면 [dotnet.microsoft.com/download](https://dotnet.microsoft.com/download)에서 **Windows x64** 버전을 설치한다. 다운로드한 앱을 실행하는 데 SDK는 필요 없다.
+3. **실행**: `Yeobaek.exe`를 두 번 누른다. 자주 쓴다면 실행 중인 작업 표시줄 아이콘을 우클릭해 **작업 표시줄에 고정**한다.
+
+소스를 직접 빌드하려면 다음 순서를 따른다.
+
+1. [dotnet.microsoft.com/download](https://dotnet.microsoft.com/download)에서 **.NET 10 SDK (Windows x64)**를 설치한다.
+2. [github.com/jacking75/Yeobaek](https://github.com/jacking75/Yeobaek)에서 **Code → Download ZIP**을 눌러 압축을 푼다. Git을 쓴다면 `git clone https://github.com/jacking75/Yeobaek.git`을 실행한다.
+3. 압축을 푼 폴더(`README.md`가 있는 곳)의 빈 곳을 **Shift+우클릭 → 터미널에서 열기**로 연 뒤 다음 명령을 실행한다. `경고 0개, 오류 0개` 또는 `Build succeeded`가 나오면 끝이다.
 
    ```powershell
    dotnet build
    ```
 
-4. **실행**
-   `bin\Debug\Yeobaek.exe` 를 두 번 누릅니다. 자주 쓴다면 실행 중에 작업 표시줄 아이콘을 우클릭해
-   **작업 표시줄에 고정** 해 두세요.
+4. `bin\Debug\Yeobaek.exe`를 두 번 누른다.
 
 > **WebView2 런타임**은 Windows 11 과 대부분의 Windows 10 에 이미 들어 있습니다. 없으면 여백이 시작할 때
 > 설치 주소와 함께 알려 주니, 설치한 뒤 다시 실행하면 됩니다.
 >
-> 다른 폴더로 옮겨 쓸 **실행 파일 하나**가 필요하면 [빌드와 실행](#빌드와-실행)의 `dotnet publish` 명령을 쓰세요.
+> 실행 파일을 직접 게시하려면 [빌드와 실행](#빌드와-실행)의 `dotnet publish` 명령을 쓴다.
 
 ### 2. 화면 둘러보기
 

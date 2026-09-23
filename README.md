@@ -81,11 +81,17 @@ A simple first session is **launch → enter an address → read → try reader 
 
 ### 1. Install and launch
 
-There is no installer yet. Build the source once, then run the app.
+There is no setup wizard. The easiest way to get started is to download the portable app:
 
-1. **Install the .NET 10 SDK.** Download **.NET 10.0 SDK (Windows x64)** from [dotnet.microsoft.com/download](https://dotnet.microsoft.com/download). Building requires the SDK; running a built app only requires the .NET Desktop Runtime.
-2. **Get the source.** At [github.com/jacking75/Yeobaek](https://github.com/jacking75/Yeobaek), select **Code → Download ZIP** and extract it. If you use Git, run `git clone https://github.com/jacking75/Yeobaek.git`.
-3. **Build.** Open a terminal in the extracted folder, where `README.md` is located. In File Explorer, you can Shift+right-click an empty area and choose **Open in Terminal**. Run:
+1. **Download Yeobaek.** Open the [v0.1.0 release](https://github.com/jacking75/Yeobaek/releases/tag/v0.1.0) and download `Yeobaek.exe` under **Assets**. This build is for Windows x64.
+2. **Install the runtime.** If .NET 10 Desktop Runtime is missing, install its **Windows x64** version from [dotnet.microsoft.com/download](https://dotnet.microsoft.com/download). You do not need the SDK to run the downloaded app.
+3. **Launch.** Double-click `Yeobaek.exe`. For quick access later, right-click its running taskbar icon and pin it to the taskbar.
+
+To build from source instead:
+
+1. Install the **.NET 10 SDK (Windows x64)** from [dotnet.microsoft.com/download](https://dotnet.microsoft.com/download).
+2. At [github.com/jacking75/Yeobaek](https://github.com/jacking75/Yeobaek), select **Code → Download ZIP** and extract it. If you use Git, run `git clone https://github.com/jacking75/Yeobaek.git`.
+3. Open a terminal in the extracted folder, where `README.md` is located. In File Explorer, you can Shift+right-click an empty area and choose **Open in Terminal**. Run:
 
    ```powershell
    dotnet build
@@ -93,11 +99,11 @@ There is no installer yet. Build the source once, then run the app.
 
    Wait for **Build succeeded** or a report of zero warnings and zero errors.
 
-4. **Launch.** Double-click `bin\Debug\Yeobaek.exe`. For quick access later, right-click its running taskbar icon and pin it to the taskbar.
+4. Double-click `bin\Debug\Yeobaek.exe`.
 
 > **WebView2 Runtime** is already installed on Windows 11 and most Windows 10 systems. If it is missing, Yeobaek shows an installation link at startup. Install it and launch the app again.
 >
-> Need a single executable to copy to another folder? See the `dotnet publish` command under [Build and run](#build-and-run).
+> To build a portable executable yourself, see the `dotnet publish` command under [Build and run](#build-and-run).
 
 ### 2. Take a tour
 
