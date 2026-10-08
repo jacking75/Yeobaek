@@ -1,20 +1,48 @@
 # Microsoft Store 무료 등록
 
 - [x] 개인 개발자 무료 계정을 등록하고 본인 확인을 완료한다.
-- [ ] Store에서 앱 이름을 예약하고 실제 패키지 ID와 게시자 정보를 확인한다.
+- [x] Store에서 앱 이름을 예약하고 실제 패키지 ID와 게시자 정보를 확인한다.
 - [x] 자체 포함 .NET Windows x64 MSIX 패키지 생성 절차를 구현하고 검증한다.
 - [x] Store 소개 문구, 개인정보 처리방침, 아이콘과 실제 화면 이미지를 준비한다.
-- [ ] 개인정보 처리방침을 공개 주소에 게시하고 접근을 확인한다.
-- [ ] 실제 Store ID로 최종 패키지를 만들고 설치·실행·제거와 Windows App Certification Kit를 확인한다.
-- [ ] 가격을 Free로 설정하고 패키지·소개·연령 등급을 입력해 심사를 제출한다.
+- [x] 개인정보 처리방침을 공개 주소에 게시하고 접근을 확인한다.
+- [x] 실제 Store ID로 최종 제출용 MSIX를 만든다.
+- [ ] 최종 패키지의 설치·실행·제거와 Windows App Certification Kit를 확인한다.
+- [x] 전체 시장의 기본 가격을 0(무료)로 저장하고 공개 배포로 설정한다.
+- [x] 카테고리, 개인정보 처리방침과 지원 주소를 저장한다.
+- [x] 제출용 MSIX를 업로드하고 Store 패키지 검증 결과를 확인한다.
+- [x] 브라우저 기능을 반영한 IARC 연령 등급과 사용자 약관 동의를 저장한다.
+- [x] Store 소개 페이지와 화면 이미지를 저장한다.
+- [x] 제한된 기능 사용 이유와 심사 참고 사항을 저장한다.
+- [x] Microsoft Store 심사를 제출하고 접수 상태를 확인한다.
 - [ ] 심사 통과와 실제 무료 게시를 확인한다.
 
 ## 현재 상태
 
 WinGet 작업은 `TODO.md`에 그대로 둔다. Microsoft Store 등록과는 별도로 관리한다.
 사용자가 개인 개발자 등록과 본인 확인을 완료했다고 확인했다.
-Partner Center에서 계정 접근과 앱 이름 예약을 이어서 확인한다.
-앱 이름 예약, 심사 제출과 게시를 완료한 것으로 표시하지 않는다.
+Partner Center에서 계정 접근을 확인하고 `여백` 이름을 예약했다.
+Store ID는 `9P9727RR5675`다. 2026-10-08 23:22 KST에 심사 접수 후 `In certification` 상태와 전처리 진행을 확인했다. 심사 통과와 실제 게시는 아직 완료하지 않았다.
+제출 ID는 `1152921505702075199`다. 모든 240개 시장에 기본 가격 `USD 0`을 저장했다. 공개 대상과 검색 가능한 배포를 선택했고, 제출 직전에도 저장된 무료 가격을 다시 확인했다.
+Productivity 카테고리, 개인정보 처리방침과 GitHub 지원 주소를 저장했다.
+Store에 실제 ID의 x64 MSIX `0.1.0.0`을 업로드하고 Windows Desktop 배포 설정을 저장했다.
+패키지 수락 검증에는 `runFullTrust` 승인 필요 경고가 있다. WPF 데스크톱 앱 실행에 필요한 권한 사용 이유를 Submission options에서 설명하고 심사 승인을 받아야 한다.
+IARC 설문에 웹 브라우저 기능을 반영했다. 생성된 등급에는 `Unrestricted Internet` 표시가 포함된다. 사용자가 IARC 약관 동의와 성인임을 확인한 뒤 저장했고, 개요의 Age ratings 상태가 Complete임을 확인했다.
+한국어, 영어, 일본어와 중국어 간체 소개 및 실제 시작 화면 `home.png`를 저장했다. Store listings 상태가 Complete임을 확인했다.
+Submission options에 `runFullTrust` 사용 이유와 심사 통과 후 즉시 게시를 저장했다. Additional Testing Info에 실행 안내를 저장하고 Successfully saved 응답을 확인했다.
+`b12ea40` 커밋으로 패키지 생성 절차와 제출 자료를 `main`에 게시했다. GitHub API로 공개 저장소의 `PRIVACY.md` 접근을 확인했다.
+사용할 개인정보 처리방침 주소는 <https://github.com/jacking75/Yeobaek/blob/main/PRIVACY.md>다.
+
+## 제출 패키지와 심사 상태 확인
+
+- 패키지: `.artifacts/microsoft-store/20261008-225833-296fddbc/jacking75.43679BBE8B1C1_0.1.0.0_x64.msix`
+- 크기: 383,036,496바이트, Windows x64, 버전 `0.1.0.0`이다.
+- SHA-256: `8B1193938FD71E344AE7E097FFDB39990769AB33F23E3E6072DF6C5521DD3AFF`
+- 심사 접수 화면: 같은 산출물 폴더의 `store-certification.png`다. 로컬 산출물은 Git에 올리지 않는다.
+- [Partner Center 개요](https://partner.microsoft.com/en-us/dashboard/products/9P9727RR5675/overview)에서 제출 상태와 심사 보고서를 확인한다.
+- 심사 통과 후 자동 게시로 설정했다. 현재는 Submission 완료, Pre-processing 진행, Certification 및 Publishing 시작 전이다.
+- 게시 후 확인할 [Store 주소](https://apps.microsoft.com/detail/9P9727RR5675)다. 현재 공개 설치 페이지가 확인됐다는 뜻은 아니다.
+
+상태를 재확인할 때는 Partner Center에 로그인해 개요를 새로 연다. 실패하면 심사 보고서의 해당 요구 사항을 확인하고 수정·재제출한다. 성공하면 공개 Store 페이지에서 무료 취득 가능 여부와 Windows x64 설치·실행·제거를 확인한 뒤 마지막 게시 태스크를 체크한다. 심사 접수만으로 게시 완료를 기록하지 않는다.
 
 ## 무료 등록 경로
 
@@ -58,9 +86,9 @@ Windows x64, .NET 10 SDK와 Windows SDK의 MakeAppx.exe가 필요하다. 빌드�
 
 ```powershell
 .\scripts\Build-StorePackage.ps1 `
-    -IdentityName 'Partner Center의 Package/Identity/Name' `
-    -Publisher 'Partner Center의 Package/Identity/Publisher' `
-    -PublisherDisplayName 'Partner Center의 Package/Properties/PublisherDisplayName' `
+    -IdentityName 'jacking75.43679BBE8B1C1' `
+    -Publisher 'CN=E66A7C98-9426-41DB-9B55-AC993F05E1A3' `
+    -PublisherDisplayName 'jacking75' `
     -DisplayName '여백'
 ```
 
@@ -74,6 +102,7 @@ Store는 MSIX를 서명한다. 로컬 개발용 MSIX는 서명하지 않으며, 
 
 - `packaging/store/listing.ko-KR.md`: 한국어 소개와 검색어다.
 - `packaging/store/listing.en-US.md`: 영어 소개와 검색어다.
+- `packaging/store/listing.ja-JP.md`, `packaging/store/listing.zh-CN.md`: 일본어와 중국어 간체 소개다.
 - `PRIVACY.md`: 실제 데이터 저장과 인터넷 통신에 근거한 개인정보 처리방침이다. 공개 URL 접근을 확인한 뒤 등록한다.
 - `packaging/store/certification-notes.md`: 심사 담당자에게 제공할 실행 안내와 `runFullTrust` 사용 이유다.
 - `packaging/store/assets/`: 기존 앱 아이콘에서 렌더링한 패키지·Store 아이콘이다.
@@ -93,7 +122,7 @@ Store는 MSIX를 서명한다. 로컬 개발용 MSIX는 서명하지 않으며, 
 - 자체 포함 게시 폴더에서 앱 창과 시작 화면을 확인했다. 시스템 WebView2 사용과 포함한 WebView2 사용을 각각 실제 자식 프로세스의 실행 경로로 확인했다. 포함한 런타임 검증에는 프로세스에만 `WEBVIEW2_RELEASE_CHANNELS=1`을 설정해 시스템 Stable 채널을 제외했다.
 - `Add-AppxPackage -Register <개발용 AppxManifest.xml>`: 종료 코드 1, `0x80073CFF`로 거부됐다. 이 컴퓨터의 개발자 모드·테스트용 로드 정책이 허용되지 않아 패키지 설치·실행·제거는 **AI 검증 못함**이다.
 - Windows App Certification Kit는 관리자 권한과 패키지 설치가 필요한 별도 검증이다. 현재 **AI 검증 못함**이며, 일반 실행 파일 실행을 MSIX 설치 성공으로 간주하지 않는다.
-- 실제 Store ID, 최종 패키지, 연령 등급, Free 가격 저장, 심사 제출과 게시 확인은 계정 등록 후 진행해야 한다.
+- 실제 Store ID의 최종 MSIX는 MakeAppx 검증과 Store 패키지 검증에 통과했다. 연령 등급과 무료 가격을 저장하고 심사를 제출했다. Store의 최종 심사 통과와 공개 게시·설치 검증은 남아 있다.
 
 최종 패키지는 설치가 허용되는 Windows x64 검증 환경에서 설치·실행·보관·제거를 확인한다. Windows 10 및 Windows 11 실기기 수락 검증은 아직 수행하지 않았다.
 관리자 PowerShell에서 인증 키트를 실행하는 공식 명령은 다음과 같다. 자체 서명 개발 패키지는 먼저 검증용 환경에 신뢰를 설정해야 한다.

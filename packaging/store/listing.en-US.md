@@ -1,6 +1,6 @@
 # English Store listing
 
-Use the app name reserved in Partner Center. The proposed English name is `Yeobaek`.
+The reserved product name is `여백` in all four Store listings. The English description uses its romanized name, `Yeobaek`.
 
 ## Description
 
@@ -37,6 +37,6 @@ Yeobaek; browser; reader mode; ad blocking; reading queue; offline reading; arti
 ## Support and privacy
 
 - Support: https://github.com/jacking75/Yeobaek/issues
-- Privacy policy: use `PRIVACY.md`. After publishing it, verify https://github.com/jacking75/Yeobaek/blob/main/PRIVACY.md is publicly accessible before entering the URL.
+- Privacy policy: https://github.com/jacking75/Yeobaek/blob/main/PRIVACY.md (public access verified before submission).
 - Copyright: Copyright (c) 2026 Choi HeungBae
 - License: MIT

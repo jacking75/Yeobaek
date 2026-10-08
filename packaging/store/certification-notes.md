@@ -1,6 +1,6 @@
 # Store 심사 담당자에게 제공할 내용
 
-아래 문구는 실제 설치·실행 검증 결과를 확인한 뒤 제출한다.
+아래 문구를 Partner Center의 Additional Testing Info에 저장했다. 일반 실행 파일의 시작과 런타임 선택을 확인했다. 로컬 MSIX 설치와 WACK 검증은 완료하지 못했으며 상세한 범위는 `docs/microsoft-store.md`에 기록한다.
 
 ## Notes for certification
 

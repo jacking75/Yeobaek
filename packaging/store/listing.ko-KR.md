@@ -1,6 +1,6 @@
 # 한국어 Store 등록 문구
 
-앱 이름은 이름 예약 결과에 맞춘다. 우선 사용할 이름은 `여백`이다.
+예약한 앱 이름 `여백`을 네 언어의 Store 소개에 사용한다.
 
 ## 설명
 
@@ -39,6 +39,6 @@
 ## 문의와 개인정보 처리방침
 
 - 지원: https://github.com/jacking75/Yeobaek/issues
-- 개인정보 처리방침: 저장소의 `PRIVACY.md` 내용이다. 실제 공개 게시 후 https://github.com/jacking75/Yeobaek/blob/main/PRIVACY.md 주소가 열리는지 확인하고 등록한다.
+- 개인정보 처리방침: https://github.com/jacking75/Yeobaek/blob/main/PRIVACY.md 주소의 공개 접근을 확인하고 등록했다.
 - 저작권: Copyright (c) 2026 Choi HeungBae
 - 라이선스: MIT
