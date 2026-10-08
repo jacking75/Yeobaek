@@ -1,3 +1,4 @@
+using System.IO;
 using System.Security.Cryptography;
 using Microsoft.Web.WebView2.Core;
 using Yeobaek.Archive;
@@ -96,8 +97,28 @@ public sealed class AppServices
             },
         };
         return CoreWebView2Environment.CreateAsync(
-            browserExecutableFolder: null,
+            browserExecutableFolder: RuntimeFolder(),
             userDataFolder: AppPaths.Profile,
             options: options);
+    }
+
+    private static string? RuntimeFolder()
+    {
+        var bundled = Path.Combine(AppContext.BaseDirectory, "WebView2Runtime");
+        if (!File.Exists(Path.Combine(bundled, "msedgewebview2.exe"))) return null;
+
+        // Store 설치에 런타임을 포함하되, 더 최신인 자동 업데이트 런타임이 있으면 사용한다.
+        var bundledVersion = CoreWebView2Environment.GetAvailableBrowserVersionString(bundled);
+        try
+        {
+            var installedVersion = CoreWebView2Environment.GetAvailableBrowserVersionString();
+            if (CoreWebView2Environment.CompareBrowserVersions(installedVersion, bundledVersion) >= 0)
+                return null;
+        }
+        catch (WebView2RuntimeNotFoundException)
+        {
+            // 별도 런타임 설치 없이 패키지에 포함한 버전으로 실행한다.
+        }
+        return bundled;
     }
 }

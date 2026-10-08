@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10"
+         xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10"
+         xmlns:rescap="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities"
+         IgnorableNamespaces="uap rescap">
+  <!-- Identity와 게시자 이름은 Build-StorePackage.ps1이 실제 Store 정보로 채운다. -->
+  <Identity Name="REPLACE_FROM_PARTNER_CENTER" Publisher="CN=REPLACE_FROM_PARTNER_CENTER"
+            Version="0.1.0.0" ProcessorArchitecture="x64" />
+  <Properties>
+    <DisplayName>여백</DisplayName>
+    <PublisherDisplayName>REPLACE_FROM_PARTNER_CENTER</PublisherDisplayName>
+    <Description>광고를 줄이고 글 읽기에 집중하는 개인용 브라우저</Description>
+    <Logo>Assets\StoreLogo.png</Logo>
+  </Properties>
+  <Resources>
+    <Resource Language="ko-KR" />
+    <Resource Language="en-US" />
+    <Resource Language="ja-JP" />
+    <Resource Language="zh-CN" />
+  </Resources>
+  <Dependencies>
+    <TargetDeviceFamily Name="Windows.Desktop" MinVersion="10.0.17763.0" MaxVersionTested="10.0.26100.0" />
+  </Dependencies>
+  <Applications>
+    <Application Id="Yeobaek" Executable="App\Yeobaek.exe" EntryPoint="Windows.FullTrustApplication">
+      <uap:VisualElements DisplayName="여백"
+                          Description="광고를 줄이고 글 읽기에 집중하는 개인용 브라우저"
+                          BackgroundColor="transparent"
+                          Square150x150Logo="Assets\Square150x150Logo.png"
+                          Square44x44Logo="Assets\Square44x44Logo.png" />
+    </Application>
+  </Applications>
+  <Capabilities>
+    <rescap:Capability Name="runFullTrust" />
+  </Capabilities>
+</Package>
